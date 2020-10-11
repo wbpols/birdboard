@@ -47,7 +47,7 @@ class ProjectController extends Controller
             ],
         ]);
 
-        Project::create($attributes);
+        auth()->user()->projects()->create($attributes);
 
         return redirect()->route('projects.index');
     }
