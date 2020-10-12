@@ -2,6 +2,7 @@
 
 namespace App\Models\Project;
 
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,6 +23,15 @@ class Project extends Model
     */
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        "owner_id" => "integer",
+    ];
+
+    /**
      * The attributes that aren't mass assignable.
      *
      * @var array
@@ -38,7 +48,17 @@ class Project extends Model
     */
 
     /**
-     * The attributes that aren't mass assignable.
+     * The owner of this Model.
+     *
+     * @var array
+     */
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    /**
+     * The route to 'show' this Model.
      *
      * @var array
      */
