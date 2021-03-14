@@ -37,6 +37,10 @@
  */
 .button {
     @apply bg-blue-500 text-white text-sm no-underline rounded-lg shadow-md py-2 px-5;
+},
+
+.card {
+    @apply bg-white rounded-lg p-5 shadow;
 };
 
 /**
