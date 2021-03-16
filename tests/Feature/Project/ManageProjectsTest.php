@@ -34,7 +34,7 @@ class ManageProjectsTest extends TestCase
 
         $attributes = Project::factory()->raw(["owner_id" => auth()->id()]);
 
-        $this->post('/projects', $attributes)->assertRedirect('/projects');
+        $this->post('/projects', $attributes)->assertStatus(302);
 
         $this->assertDatabaseHas('projects', $attributes);
 

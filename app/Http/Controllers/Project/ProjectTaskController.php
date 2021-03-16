@@ -40,6 +40,8 @@ class ProjectTaskController extends Controller
      */
     public function store(Request $request, Project $project)
     {
+        abort_if(auth()->user()->isNot($project->owner), 403);
+
         // Validate the attributes.
         $attributes = $request->validate([
             "body" => ["required",
