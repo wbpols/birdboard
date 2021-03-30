@@ -20,6 +20,7 @@ class CreateTasksTable extends Migration
             $table->id();
             $table->unsignedBigInteger($project->getForeignKey());
             $table->text('body');
+            $table->boolean('completed')->default(false);
             $table->timestamps();
 
             // Foreign Keys

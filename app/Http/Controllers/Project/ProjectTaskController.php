@@ -44,7 +44,8 @@ class ProjectTaskController extends Controller
 
         // Validate the attributes.
         $attributes = $request->validate([
-            "body" => ["required",
+            "body" => [
+                "required",
                 "string",
                 "min:5",
             ],
@@ -91,7 +92,30 @@ class ProjectTaskController extends Controller
      */
     public function update(Request $request, Project $project, Task $task)
     {
-        //
+        // Validate that the authenticated User is the owner of the Project.
+        abort_if(auth()->user()->isNot($project->owner), 403);
+
+        // Validate that the Project is associated to the Task.
+        abort_if($project->isNot($task->project), 403);
+
+        // Validate the request.
+        $attributes = $request->validate([
+            "body" => [
+                "required",
+                "string",
+                "min:5",
+            ],
+            "completed" => [
+                "sometimes",
+                "boolean",
+            ],
+        ]);
+
+        // Update the Task.
+        $task->update(["body" => $attributes["body"], "completed" => isset($attributes["completed"])]);
+
+        // Redirect to another route.
+        return redirect($project->path());
     }
 
     /**

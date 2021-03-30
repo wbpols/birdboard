@@ -55,4 +55,21 @@ class Task extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Methods
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * The route to 'show' this Model.
+     *
+     * @return string
+     */
+    public function path()
+    {
+        return "{$this->project->getTable()}/{$this->project->getRouteKey()}/{$this->getTable()}/{$this->getKey()}";
+    }
 }
