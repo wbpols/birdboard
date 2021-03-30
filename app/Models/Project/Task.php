@@ -39,6 +39,15 @@ class Task extends Model
         //
     ];
 
+    /**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = [
+        "project",
+    ];
+
 
     /*
     |--------------------------------------------------------------------------
