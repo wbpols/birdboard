@@ -40,7 +40,7 @@ class ProjectTaskController extends Controller
      */
     public function store(Request $request, Project $project)
     {
-        abort_if(auth()->user()->isNot($project->owner), 403);
+        $this->authorize('update', $project);
 
         // Validate the attributes.
         $attributes = $request->validate([
@@ -92,8 +92,7 @@ class ProjectTaskController extends Controller
      */
     public function update(Request $request, Project $project, Task $task)
     {
-        // Validate that the authenticated User is the owner of the Project.
-        abort_if(auth()->user()->isNot($project->owner), 403);
+        $this->authorize('update', $project);
 
         // Validate that the Project is associated to the Task.
         abort_if($project->isNot($task->project), 403);
