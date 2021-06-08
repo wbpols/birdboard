@@ -6,6 +6,7 @@ use App\Models\Project\Project;
 use App\Models\Project\Task;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Facades\Tests\Setup\FactoryProject;
 use Tests\TestCase;
 
 class ProjectTasksTest extends TestCase
@@ -15,11 +16,10 @@ class ProjectTasksTest extends TestCase
     /** @test */
     public function a_project_can_have_tasks()
     {
-        $this->signIn();
+        $project = FactoryProject::create();
 
-        $project = auth()->user()->projects()->create(Project::factory()->raw());
-
-        $this->post("{$project->path()}/tasks", ($task = Task::factory()->raw()));
+        $this->actingAs($project->owner)
+            ->post("{$project->path()}/tasks", ($task = Task::factory()->raw()));
 
         $this->get($project->path())
             ->assertSee($task["body"]);
@@ -28,11 +28,10 @@ class ProjectTasksTest extends TestCase
     /** @test */
     public function only_the_owner_of_a_project_may_add_tasks()
     {
-        $this->signIn();
+        $project = FactoryProject::create();
 
-        $project = Project::factory()->create();
-
-        $this->post("{$project->path()}/tasks", ($task = Task::factory()->raw()))
+        $this->actingAs($this->signIn())
+            ->post("{$project->path()}/tasks", ($task = Task::factory()->raw()))
             ->assertStatus(403);
 
         $this->assertDatabaseMissing('tasks', $task);
@@ -41,26 +40,22 @@ class ProjectTasksTest extends TestCase
     /** @test */
     public function a_task_requires_a_body()
     {
-        $this->signIn();
+        $project = FactoryProject::create();
 
-        $project = auth()->user()->projects()->create(Project::factory()->raw());
-
-        $this->post("{$project->path()}/tasks", ($task = Task::factory()->raw(["body" => null])))
+        $this->actingAs($project->owner)
+            ->post("{$project->path()}/tasks", ($task = Task::factory()->raw(["body" => null])))
             ->assertSessionHasErrors('body');
     }
 
     /** @test */
     public function a_task_can_be_updated()
     {
-        $this->signIn();
+        $project = FactoryProject::withTasks(1)->create();
 
-        $project = auth()->user()->projects()->create(Project::factory()->raw());
+        $this->actingAs($project->owner)
+            ->patch($project->tasks->first()->path(), ["body" => "changed"]);
 
-        $task = $project->addTask(Task::factory()->raw()["body"]);
-
-        $this->patch($task->path(), ["body" => "changed"]);
-
-        $this->assertDatabaseHas($task->getTable(), ["body" => "changed"]);
+        $this->assertDatabaseHas($project->tasks->first()->getTable(), ["body" => "changed"]);
     }
 
     /** @test */
@@ -68,13 +63,11 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = Project::factory()->create();
+        $project = FactoryProject::withTasks(1)->create();
 
-        $task = $project->addTask(Task::factory()->raw()["body"]);
-
-        $this->patch($task->path(), ["body" => "changed"])
+        $this->patch($project->tasks->first()->path(), ["body" => "changed"])
             ->assertStatus(403);
 
-        $this->assertDatabaseMissing($task->getTable(), ["body" => "changed"]);
+        $this->assertDatabaseMissing($project->tasks->first()->getTable(), ["body" => "changed"]);
     }
 }

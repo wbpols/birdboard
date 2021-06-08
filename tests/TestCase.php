@@ -13,10 +13,17 @@ abstract class TestCase extends BaseTestCase
      * Sign in as a application User.
      *
      * @param  \App\Models\User\User|null $user
-     * @return $this
+     * @return \App\Models\User\User
      */
     protected function signIn($user = null)
     {
-        return $this->actingAs($user ?: User::factory()->create());
+        // Set the specified User or create a new one.
+        $user = $user ?: User::factory()->create();
+
+        // Preform the test using this User.
+        $this->actingAs($user);
+
+        // Return the User.
+        return $user;
     }
 }
