@@ -81,7 +81,7 @@ class Project extends Model
      */
     public function path()
     {
-        return "{$this->getTable()}/{$this->getKey()}";
+        return "/{$this->getTable()}/{$this->getKey()}";
     }
 
     /**

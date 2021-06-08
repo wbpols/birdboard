@@ -24,6 +24,6 @@ class TaskTest extends TestCase
     {
         $task = Task::factory()->create();
 
-        $this->assertEquals("projects/{$task->project->getRouteKey()}/tasks/{$task->getRouteKey()}", $task->path());
+        $this->assertEquals("/projects/{$task->project->getRouteKey()}/tasks/{$task->getRouteKey()}", $task->path());
     }
 }

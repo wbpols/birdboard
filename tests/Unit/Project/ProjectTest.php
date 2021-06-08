@@ -16,7 +16,7 @@ class ProjectTest extends TestCase
     {
         $project = Project::factory()->create();
 
-        $this->assertEquals("projects/{$project->getKey()}", $project->path());
+        $this->assertEquals("/projects/{$project->getKey()}", $project->path());
     }
 
     /** @test */

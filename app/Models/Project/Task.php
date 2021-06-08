@@ -79,6 +79,6 @@ class Task extends Model
      */
     public function path()
     {
-        return "{$this->project->getTable()}/{$this->project->getRouteKey()}/{$this->getTable()}/{$this->getKey()}";
+        return "/{$this->project->getTable()}/{$this->project->getRouteKey()}/{$this->getTable()}/{$this->getKey()}";
     }
 }
