@@ -40,7 +40,7 @@
 
                 {{-- general notes --}}
                 <form action="{{ $project->path() }}" method="post">
-                    <textarea class="card w-full mb-4" style="min-height: 200px;" placeholder="Anything special you want to make a note of?">{{ $project->notes }}</textarea>
+                    <textarea id="notes" name="notes" class="card w-full mb-4" style="min-height: 200px;" placeholder="Anything special you want to make a note of?">{{ $project->notes }}</textarea>
                     @method("PATCH")
                     @csrf
                     <button type="submit" class="button">Save</button>

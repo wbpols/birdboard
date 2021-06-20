@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Models\Project\Project;
 use Illuminate\Http\Request;
 
@@ -70,17 +71,13 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Project\UpdateProjectRequest  $form
      * @param  \App\Models\Project\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(UpdateProjectRequest $form, Project $project)
     {
-        $this->authorize('update', $project);
-
-        $project->update($this->validateRequest($request));
-
-        return redirect($project->path());
+        return redirect($form->save()->path());
     }
 
     /**
