@@ -23,6 +23,23 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->bootObservers();
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Methods
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Bootstrap the model observers.
+     *
+     * @return void
+     */
+    private function bootObservers()
+    {
+        \App\Models\Project\Project::observe(\App\Observers\Project\ProjectObserver::class);
     }
 }

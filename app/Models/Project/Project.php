@@ -2,6 +2,7 @@
 
 namespace App\Models\Project;
 
+use App\Models\Activity\Activity;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -46,6 +47,16 @@ class Project extends Model
     | Relations
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * The activities for this Model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
+    }
 
     /**
      * The owner of this Model.
