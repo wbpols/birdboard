@@ -105,4 +105,15 @@ class Project extends Model
     {
         return $this->tasks()->create(compact("body"));
     }
+
+    /**
+     * Create a Activity for the Project.
+     *
+     * @param  string  $description  A description for the Activity.
+     * @return \App\Models\Activity\Activity
+     */
+    public function record(string $description)
+    {
+        return $this->activities()->create(["description" => $description]);
+    }
 }

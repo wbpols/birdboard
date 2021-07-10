@@ -104,14 +104,15 @@ class ProjectTaskController extends Controller
                 "string",
                 "min:5",
             ],
-            "completed" => [
-                "sometimes",
-                "boolean",
-            ],
         ]);
 
         // Update the Task.
-        $task->update(["body" => $attributes["body"], "completed" => isset($attributes["completed"])]);
+        $task->update(["body" => $attributes["body"]]);
+
+        // When the request contains a completed value, complete the Task.
+        if ($request->has('completed')) {
+            $task->complete();
+        }
 
         // Redirect to another route.
         return redirect($project->path());

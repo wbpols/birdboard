@@ -14,7 +14,7 @@ class ProjectObserver
      */
     public function created(Project $project)
     {
-        $this->record($project, 'created');
+        $project->record('created');
     }
 
     /**
@@ -25,7 +25,7 @@ class ProjectObserver
      */
     public function updated(Project $project)
     {
-        $this->record($project, 'updated');
+        $project->record('updated');
     }
 
     /**
@@ -59,24 +59,5 @@ class ProjectObserver
     public function forceDeleted(Project $project)
     {
         //
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Custom Methods
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Create a Activity for the Project.
-     *
-     * @param  \App\Models\Project\Project  $project  The Project to record an Activity on.
-     * @param  string  $description  A description for the Activity.
-     * @return \App\Models\Activity\Activity
-     */
-    private function record(Project $project, string $description)
-    {
-        return $project->activities()->create(["description" => $description]);
     }
 }

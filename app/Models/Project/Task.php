@@ -28,6 +28,7 @@ class Task extends Model
      */
     protected $casts = [
         "project_id" => "integer",
+        "completed" => "boolean",
     ];
 
     /**
@@ -47,6 +48,35 @@ class Task extends Model
     protected $touches = [
         "project",
     ];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Model Methods
+    |--------------------------------------------------------------------------
+    */
+
+
+    /**
+     * Bootstrap the model and its traits.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($task) {
+            $task->project->record('created_task');
+        });
+
+        static::updated(function ($task) {
+            // Only create an Activity when the Task is completed.
+            if ($task->completed) {
+                $task->project->record('completed_task');
+            }
+        });
+    }
 
 
     /*
@@ -71,6 +101,16 @@ class Task extends Model
     | Custom Methods
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * The route to 'show' this Model.
+     *
+     * @return string
+     */
+    public function complete()
+    {
+        $this->update(["completed" => true]);
+    }
 
     /**
      * The route to 'show' this Model.
