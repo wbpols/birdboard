@@ -48,6 +48,40 @@ class ProjectTasksTest extends TestCase
     }
 
     /** @test */
+    public function a_task_can_be_completed()
+    {
+        $project = FactoryProject::withTasks(1)->create();
+
+        $this->actingAs($project->owner)
+            ->patch($project->tasks->first()->path(), [
+                "body" => "changed",
+                "completed" => true,
+            ]);
+
+        $this->assertDatabaseHas($project->tasks->first()->getTable(), [
+            "body" => "changed",
+            "completed" => true,
+        ]);
+    }
+
+    /** @test */
+    public function a_task_can_be_marked_as_uncompleted()
+    {
+        $project = FactoryProject::withTasks(1)->create();
+
+        $this->actingAs($project->owner)
+            ->patch($project->tasks->first()->path(), [
+                "body" => "changed",
+                "completed" => false,
+            ]);
+
+        $this->assertDatabaseHas($project->tasks->first()->getTable(), [
+            "body" => "changed",
+            "completed" => false,
+        ]);
+    }
+
+    /** @test */
     public function a_task_can_be_updated()
     {
         $project = FactoryProject::withTasks(1)->create();

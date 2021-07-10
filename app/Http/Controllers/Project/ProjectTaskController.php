@@ -97,22 +97,22 @@ class ProjectTaskController extends Controller
         // Validate that the Project is associated to the Task.
         abort_if($project->isNot($task->project), 403);
 
-        // Validate the request.
-        $attributes = $request->validate([
-            "body" => [
-                "required",
-                "string",
-                "min:5",
-            ],
-        ]);
+        // Validate the request and update the Task.
+        $task->update(
+            $request->validate([
+                "body" => [
+                    "required",
+                    "string",
+                    "min:5",
+                ],
+            ])
+        );
 
-        // Update the Task.
-        $task->update(["body" => $attributes["body"]]);
+        // Determine the method to execute regarding the completion of the Task.
+        $method = $request->completed ? 'complete' : 'uncomplete';
 
-        // When the request contains a completed value, complete the Task.
-        if ($request->has('completed')) {
-            $task->complete();
-        }
+        // Execute the action.
+        $task->$method();
 
         // Redirect to another route.
         return redirect($project->path());

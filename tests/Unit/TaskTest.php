@@ -32,6 +32,18 @@ class TaskTest extends TestCase
     }
 
     /** @test */
+    public function it_can_be_marked_as_uncompleted()
+    {
+        $task = Task::factory()->create(["completed" => false]);
+
+        $this->assertFalse($task->completed);
+
+        $task->complete();
+
+        $this->assertTrue($task->fresh()->completed);
+    }
+
+    /** @test */
     public function it_has_a_path()
     {
         $task = Task::factory()->create();

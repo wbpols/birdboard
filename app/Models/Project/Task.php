@@ -103,13 +103,24 @@ class Task extends Model
     */
 
     /**
-     * The route to 'show' this Model.
+     * Mark the Task as completed.
      *
-     * @return string
+     * @param  bool  $completed  Variable used to
+     * @return void
      */
-    public function complete()
+    public function complete($completed = true)
     {
-        $this->update(["completed" => true]);
+        $this->update(["completed" => $completed]);
+    }
+
+    /**
+     * Revert the Task back to uncompleted.
+     *
+     * @return void
+     */
+    public function uncomplete()
+    {
+        $this->complete(false);
     }
 
     /**

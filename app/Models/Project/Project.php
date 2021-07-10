@@ -114,6 +114,6 @@ class Project extends Model
      */
     public function record(string $description)
     {
-        return $this->activities()->create(["description" => $description]);
+        return $this->activities()->create(compact("description"));
     }
 }
