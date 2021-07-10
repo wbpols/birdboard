@@ -27,7 +27,7 @@ class TaskFactory extends Factory
         return [
             $project->getForeignKey() => $project->factory()->create(),
             "body" => $this->faker->sentence,
-            "completed" => $this->faker->boolean(),
+            "completed" => false,
         ];
     }
 }

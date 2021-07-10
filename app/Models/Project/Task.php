@@ -52,35 +52,6 @@ class Task extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Model Methods
-    |--------------------------------------------------------------------------
-    */
-
-
-    /**
-     * Bootstrap the model and its traits.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::created(function ($task) {
-            $task->project->record('created_task');
-        });
-
-        static::updated(function ($task) {
-            // Only create an Activity when the Task is completed.
-            if ($task->completed) {
-                $task->project->record('completed_task');
-            }
-        });
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
