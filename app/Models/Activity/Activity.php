@@ -56,4 +56,14 @@ class Activity extends Model
     {
         return $this->belongsTo(Project::class, 'project_id');
     }
+
+    /**
+     * The subject Model linked to this Activity.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function subject()
+    {
+        return $this->morphTo('subject');
+    }
 }

@@ -14,7 +14,7 @@ class TaskObserver
      */
     public function created(Task $task)
     {
-        $task->project->record('created_task');
+        $task->record('created_task');
     }
 
     /**
@@ -27,7 +27,7 @@ class TaskObserver
     {
         // Only create an Activity when the Task completed column is updated.
         if ($task->wasChanged('completed')) {
-            $task->project->record($task->completed ? 'completed_task' : 'uncompleted_task');
+            $task->record($task->completed ? 'completed_task' : 'uncompleted_task');
         }
     }
 

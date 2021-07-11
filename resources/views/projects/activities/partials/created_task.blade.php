@@ -1,1 +1,1 @@
-{{ $activity->description }}
+You created "{{ $activity->subject->body }}"

@@ -21,8 +21,16 @@ class CreateActivitiesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('project_id')
                 ->comment("References the {$project->getKeyName()} on '{$project->getTable()}'");
+            $table->string('subject_type')
+                ->nullable(true);
+            $table->unsignedBigInteger('subject_id')
+                ->nullable(true)
+                ->comment("References the ID on the provided 'subject_type' model table");
             $table->string('description');
             $table->timestamps();
+
+            // Indexes
+            $table->index(["subject_type", "subject_id"], 'activities_subject_index');
 
             // Foreign Keys
             $table->foreign('project_id')

@@ -2,6 +2,7 @@
 
 namespace App\Models\Project;
 
+use App\Models\Activity\Activity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -57,6 +58,16 @@ class Task extends Model
     */
 
     /**
+     * The activities for this Model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function activities()
+    {
+        return $this->morphMany(Activity::class, 'subject')->latest();
+    }
+
+    /**
      * The project related to this Model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -102,5 +113,19 @@ class Task extends Model
     public function path()
     {
         return "/{$this->project->getTable()}/{$this->project->getRouteKey()}/{$this->getTable()}/{$this->getKey()}";
+    }
+
+    /**
+     * Create a Activity for the Project.
+     *
+     * @param  string  $description  A description for the Activity.
+     * @return \App\Models\Activity\Activity
+     */
+    public function record(string $description)
+    {
+        return $this->activities()->create([
+            "project_id" => $this->project_id,
+            "description" => $description,
+        ]);
     }
 }

@@ -1,1 +1,1 @@
-{{ $activity->description }}
+You {{ $activity->description }} the Project
