@@ -55,7 +55,7 @@ class Project extends Model
      */
     public function activities()
     {
-        return $this->hasMany(Activity::class);
+        return $this->hasMany(Activity::class)->latest();
     }
 
     /**
