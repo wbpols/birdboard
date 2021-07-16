@@ -27,6 +27,7 @@ class CreateActivitiesTable extends Migration
                 ->nullable(true)
                 ->comment("References the ID on the provided 'subject_type' model table");
             $table->string('description');
+            $table->text('changes')->nullable(true);
             $table->timestamps();
 
             // Indexes

@@ -28,6 +28,7 @@ class Activity extends Model
      * @var array
      */
     protected $casts = [
+        "changes" => "array",
         "project_id" => "integer",
     ];
 
