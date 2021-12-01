@@ -3,6 +3,7 @@
 namespace App\Models\Project;
 
 use App\Models\Activity\Activity;
+use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +15,7 @@ class Task extends Model
     |--------------------------------------------------------------------------
     */
     use HasFactory;
+    use RecordsActivity;
 
 
     /*
@@ -53,19 +55,26 @@ class Task extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Relations
+    | Custom Attributes
     |--------------------------------------------------------------------------
     */
 
     /**
-     * The activities for this Model.
+     * The events that should be recorded on a Activity.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @var string[]
      */
-    public function activities()
-    {
-        return $this->morphMany(Activity::class, 'subject')->latest();
-    }
+    protected static $recordableActivityEvents = [
+        'created',
+        'deleted',
+    ];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * The project related to this Model.
@@ -92,7 +101,11 @@ class Task extends Model
      */
     public function complete($completed = true)
     {
+        // Update the task.
         $this->update(["completed" => $completed]);
+
+        // Record the changes.
+        $this->record(($completed ? 'completed' : 'uncompleted') . '_task');
     }
 
     /**
@@ -113,19 +126,5 @@ class Task extends Model
     public function path()
     {
         return "/{$this->project->getTable()}/{$this->project->getRouteKey()}/{$this->getTable()}/{$this->getKey()}";
-    }
-
-    /**
-     * Create a Activity for the Project.
-     *
-     * @param  string  $description  A description for the Activity.
-     * @return \App\Models\Activity\Activity
-     */
-    public function record(string $description)
-    {
-        return $this->activities()->create([
-            "project_id" => $this->project_id,
-            "description" => $description,
-        ]);
     }
 }
