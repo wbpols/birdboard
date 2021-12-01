@@ -117,6 +117,18 @@ trait RecordsActivity
     }
 
     /**
+     * Get the ID of the owner of the Project for the Activity.
+     *
+     * @return int
+     */
+    protected function getActivityOwnerId()
+    {
+        return basename(static::class) === 'Project'
+            ? $this->owner_id
+            : $this->project->owner_id;
+    }
+
+    /**
      * Create a Activity for the Project.
      *
      * @param  string  $description  A description for the Activity.
@@ -128,6 +140,7 @@ trait RecordsActivity
             "description" => $description,
             "changes" => $this->getActivityChanges(),
             "project_id" => basename(static::class) === 'Project' ? $this->id : $this->project_id,
+            "user_id" => $this->getActivityOwnerId(),
         ]);
     }
 

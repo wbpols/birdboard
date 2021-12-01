@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Project\Project;
+use App\Models\User\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,11 +17,14 @@ class CreateActivitiesTable extends Migration
     {
         // Define the foreign model relations.
         $project = new Project();
+        $user = new User();
 
-        Schema::create('activities', function (Blueprint $table) use ($project) {
+        Schema::create('activities', function (Blueprint $table) use ($project, $user) {
             $table->id();
             $table->unsignedBigInteger('project_id')
                 ->comment("References the {$project->getKeyName()} on '{$project->getTable()}'");
+            $table->unsignedBigInteger('user_id')
+                ->comment("References the {$user->getKeyName()} on '{$user->getTable()}'");
             $table->string('subject_type')
                 ->nullable(true);
             $table->unsignedBigInteger('subject_id')
@@ -37,6 +41,10 @@ class CreateActivitiesTable extends Migration
             $table->foreign('project_id')
                 ->references($project->getKeyName())
                 ->on($project->getTable())
+                ->onDelete('cascade');
+            $table->foreign('user_id')
+                ->references($user->getKeyName())
+                ->on($user->getTable())
                 ->onDelete('cascade');
         });
     }

@@ -4,6 +4,7 @@ namespace Database\Factories\Activity;
 
 use App\Models\Activity\Activity;
 use App\Models\Project\Project;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ActivityFactory extends Factory
@@ -23,6 +24,7 @@ class ActivityFactory extends Factory
     public function definition()
     {
         return [
+            "user_id" => fn () => User::factory()->create()->getKey(),
             "project_id" => fn () => Project::factory()->create()->getKey(),
             "description" => $this->faker->sentence,
         ];

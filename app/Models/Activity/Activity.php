@@ -3,6 +3,7 @@
 namespace App\Models\Activity;
 
 use App\Models\Project\Project;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -66,5 +67,15 @@ class Activity extends Model
     public function subject()
     {
         return $this->morphTo('subject');
+    }
+
+    /**
+     * The user Model that created this Activity.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
