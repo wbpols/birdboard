@@ -153,6 +153,6 @@ trait RecordsActivity
     {
         return isset(static::$recordableActivityEvents)
             ? static::$recordableActivityEvents
-            : ['created', 'updated', 'deleted'];
+            : ['created', 'updated'];
     }
 }

@@ -88,7 +88,14 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        // Determine if the user is authorized to delete the project.
+        $this->authorize('update', $project);
+
+        // Delete the project.
+        $project->delete();
+
+        // Redirect to the index page.
+        return redirect()->route('projects.index');
     }
 
     /**
